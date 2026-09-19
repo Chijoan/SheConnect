@@ -2,12 +2,164 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SheConnect</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <h1>Welcome to SheConnect</h1>
-    <p>A safe digital space for women and girls.</p>
+
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="#home" class="logo">SheConnect</a>
+
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <nav>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#emergency">Emergency Help</a></li>
+                    <li><a href="#" class="btn-link">Login</a></li>
+                    <li><a href="#" class="btn-link btn-link-filled">Register</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>A safe space to connect, learn and grow.</h1>
+                    <p>
+                        SheConnect supports women and girls with health information,
+                        safety support, education and community across Africa.
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="#" class="btn btn-primary">Join SheConnect</a>
+                        <a href="#features" class="btn btn-secondary">Explore Features</a>
+                    </div>
+                </div>
+
+                <div class="hero-illustration">
+                    <svg viewBox="0 0 480 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="heroIllustrationTitle heroIllustrationDesc" class="hero-svg">
+                        <title id="heroIllustrationTitle">Illustration of three African girls</title>
+                        <desc id="heroIllustrationDesc">Three diverse African girls smiling together, with different natural hairstyles — an afro, braids and Bantu knots — and different warm skin tones, drawn in a pink, purple and cream colour theme.</desc>
+
+                        <circle cx="90" cy="70" r="70" fill="#f9d7e6" opacity="0.6"/>
+                        <circle cx="400" cy="90" r="55" fill="#e4d3f5" opacity="0.55"/>
+                        <ellipse cx="240" cy="358" rx="210" ry="16" fill="#f3c9db" opacity="0.45"/>
+
+                        <!-- Left girl: afro -->
+                        <g>
+                            <circle cx="115" cy="150" r="60" fill="#3b2a26"/>
+                            <path d="M50 345 Q50 255 115 245 Q180 255 180 345 Z" fill="#e2679e"/>
+                            <circle cx="95" cy="253" r="4" fill="#fdf6f0"/>
+                            <circle cx="115" cy="248" r="4" fill="#fdf6f0"/>
+                            <circle cx="135" cy="253" r="4" fill="#fdf6f0"/>
+                            <rect x="104" y="205" width="22" height="50" rx="8" fill="#a9714e"/>
+                            <ellipse cx="115" cy="175" rx="40" ry="46" fill="#a9714e"/>
+                            <circle cx="101" cy="172" r="4" fill="#2a1f1c"/>
+                            <circle cx="129" cy="172" r="4" fill="#2a1f1c"/>
+                            <path d="M100 192 Q115 202 130 192" stroke="#2a1f1c" stroke-width="3" fill="none" stroke-linecap="round"/>
+                        </g>
+
+                        <!-- Right girl: bantu knots -->
+                        <g>
+                            <path d="M300 348 Q300 258 365 248 Q430 258 430 348 Z" fill="#e0954f"/>
+                            <circle cx="345" cy="253" r="4" fill="#fdf6f0"/>
+                            <circle cx="365" cy="248" r="4" fill="#fdf6f0"/>
+                            <circle cx="385" cy="253" r="4" fill="#fdf6f0"/>
+                            <rect x="354" y="208" width="22" height="50" rx="8" fill="#d9a066"/>
+                            <ellipse cx="365" cy="178" rx="40" ry="45" fill="#d9a066"/>
+                            <circle cx="335" cy="140" r="12" fill="#3b2a26"/>
+                            <circle cx="365" cy="130" r="12" fill="#3b2a26"/>
+                            <circle cx="395" cy="140" r="12" fill="#3b2a26"/>
+                            <circle cx="345" cy="155" r="10" fill="#3b2a26"/>
+                            <circle cx="385" cy="155" r="10" fill="#3b2a26"/>
+                            <circle cx="352" cy="178" r="4" fill="#2a1f1c"/>
+                            <circle cx="380" cy="178" r="4" fill="#2a1f1c"/>
+                            <path d="M350 198 Q365 208 380 198" stroke="#2a1f1c" stroke-width="3" fill="none" stroke-linecap="round"/>
+                        </g>
+
+                        <!-- Middle girl: braids, drawn last so she sits in front -->
+                        <g>
+                            <path d="M170 355 Q170 250 240 238 Q310 250 310 355 Z" fill="#6f42c1"/>
+                            <circle cx="215" cy="248" r="4" fill="#fdf6f0"/>
+                            <circle cx="240" cy="242" r="4" fill="#fdf6f0"/>
+                            <circle cx="265" cy="248" r="4" fill="#fdf6f0"/>
+                            <rect x="228" y="200" width="24" height="55" rx="9" fill="#6b4226"/>
+                            <ellipse cx="240" cy="168" rx="44" ry="50" fill="#6b4226"/>
+                            <path d="M198 155 Q240 100 282 155 Q282 130 240 118 Q198 130 198 155 Z" fill="#2a1f1c"/>
+                            <path d="M200 190 Q190 240 195 290" stroke="#2a1f1c" stroke-width="8" fill="none" stroke-linecap="round"/>
+                            <path d="M280 190 Q290 240 285 290" stroke="#2a1f1c" stroke-width="8" fill="none" stroke-linecap="round"/>
+                            <circle cx="224" cy="168" r="4" fill="#2a1f1c"/>
+                            <circle cx="256" cy="168" r="4" fill="#2a1f1c"/>
+                            <path d="M222 190 Q240 202 258 190" stroke="#2a1f1c" stroke-width="3" fill="none" stroke-linecap="round"/>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="about">
+            <h2>About SheConnect</h2>
+            <p>
+                SheConnect is a digital space created to support African women and girls.
+                Our purpose is to make trusted health information, safety resources,
+                education and community support easier to reach, so that every woman
+                and girl feels informed, supported and connected.
+            </p>
+        </section>
+
+        <section id="features" class="features">
+            <h2>Our Features</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>Menstrual Health</h3>
+                    <p>Access simple, reliable information about menstrual health and hygiene.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Report GBV</h3>
+                    <p>A supportive space to learn how to report gender-based violence safely.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Emergency Support</h3>
+                    <p>Quick access to emergency help resources when they are needed most.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Community Support</h3>
+                    <p>Connect with a community that listens, understands and uplifts.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Hygiene Education</h3>
+                    <p>Learn practical hygiene tips for a healthier, more confident life.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Tech for Girls</h3>
+                    <p>Encouraging girls to explore and grow their skills in technology.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="emergency" class="emergency">
+            <h2>Emergency Help</h2>
+            <p>
+                If you are in danger or need urgent support, help resources will be made
+                available here soon. This section is being prepared to connect you with
+                the right support as quickly as possible.
+            </p>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 SheConnect. A safe digital space for women and girls.</p>
+    </footer>
 
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
