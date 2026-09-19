@@ -10,7 +10,13 @@
 
     <header class="navbar">
         <div class="nav-container">
-            <a href="#home" class="logo">SheConnect</a>
+            <a href="{{ url_for('home') }}" class="logo" aria-label="SheConnect home">
+                <svg class="logo-icon" viewBox="0 0 60 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                    <ellipse cx="22" cy="18" rx="16" ry="10" fill="none" stroke="#d63384" stroke-width="6" transform="rotate(-20 22 18)"/>
+                    <ellipse cx="38" cy="18" rx="16" ry="10" fill="none" stroke="#6f42c1" stroke-width="6" transform="rotate(20 38 18)"/>
+                </svg>
+                <span class="logo-text">SheConnect</span>
+            </a>
 
             <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation menu" aria-expanded="false">
                 <span></span>
@@ -47,62 +53,11 @@
                 </div>
 
                 <div class="hero-illustration">
-                    <svg viewBox="0 0 480 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="heroIllustrationTitle heroIllustrationDesc" class="hero-svg">
-                        <title id="heroIllustrationTitle">Illustration of three African girls</title>
-                        <desc id="heroIllustrationDesc">Three diverse African girls smiling together, with different natural hairstyles — an afro, braids and Bantu knots — and different warm skin tones, drawn in a pink, purple and cream colour theme.</desc>
-
-                        <circle cx="90" cy="70" r="70" fill="#f9d7e6" opacity="0.6"/>
-                        <circle cx="400" cy="90" r="55" fill="#e4d3f5" opacity="0.55"/>
-                        <ellipse cx="240" cy="358" rx="210" ry="16" fill="#f3c9db" opacity="0.45"/>
-
-                        <!-- Left girl: afro -->
-                        <g>
-                            <circle cx="115" cy="150" r="60" fill="#3b2a26"/>
-                            <path d="M50 345 Q50 255 115 245 Q180 255 180 345 Z" fill="#e2679e"/>
-                            <circle cx="95" cy="253" r="4" fill="#fdf6f0"/>
-                            <circle cx="115" cy="248" r="4" fill="#fdf6f0"/>
-                            <circle cx="135" cy="253" r="4" fill="#fdf6f0"/>
-                            <rect x="104" y="205" width="22" height="50" rx="8" fill="#a9714e"/>
-                            <ellipse cx="115" cy="175" rx="40" ry="46" fill="#a9714e"/>
-                            <circle cx="101" cy="172" r="4" fill="#2a1f1c"/>
-                            <circle cx="129" cy="172" r="4" fill="#2a1f1c"/>
-                            <path d="M100 192 Q115 202 130 192" stroke="#2a1f1c" stroke-width="3" fill="none" stroke-linecap="round"/>
-                        </g>
-
-                        <!-- Right girl: bantu knots -->
-                        <g>
-                            <path d="M300 348 Q300 258 365 248 Q430 258 430 348 Z" fill="#e0954f"/>
-                            <circle cx="345" cy="253" r="4" fill="#fdf6f0"/>
-                            <circle cx="365" cy="248" r="4" fill="#fdf6f0"/>
-                            <circle cx="385" cy="253" r="4" fill="#fdf6f0"/>
-                            <rect x="354" y="208" width="22" height="50" rx="8" fill="#d9a066"/>
-                            <ellipse cx="365" cy="178" rx="40" ry="45" fill="#d9a066"/>
-                            <circle cx="335" cy="140" r="12" fill="#3b2a26"/>
-                            <circle cx="365" cy="130" r="12" fill="#3b2a26"/>
-                            <circle cx="395" cy="140" r="12" fill="#3b2a26"/>
-                            <circle cx="345" cy="155" r="10" fill="#3b2a26"/>
-                            <circle cx="385" cy="155" r="10" fill="#3b2a26"/>
-                            <circle cx="352" cy="178" r="4" fill="#2a1f1c"/>
-                            <circle cx="380" cy="178" r="4" fill="#2a1f1c"/>
-                            <path d="M350 198 Q365 208 380 198" stroke="#2a1f1c" stroke-width="3" fill="none" stroke-linecap="round"/>
-                        </g>
-
-                        <!-- Middle girl: braids, drawn last so she sits in front -->
-                        <g>
-                            <path d="M170 355 Q170 250 240 238 Q310 250 310 355 Z" fill="#6f42c1"/>
-                            <circle cx="215" cy="248" r="4" fill="#fdf6f0"/>
-                            <circle cx="240" cy="242" r="4" fill="#fdf6f0"/>
-                            <circle cx="265" cy="248" r="4" fill="#fdf6f0"/>
-                            <rect x="228" y="200" width="24" height="55" rx="9" fill="#6b4226"/>
-                            <ellipse cx="240" cy="168" rx="44" ry="50" fill="#6b4226"/>
-                            <path d="M198 155 Q240 100 282 155 Q282 130 240 118 Q198 130 198 155 Z" fill="#2a1f1c"/>
-                            <path d="M200 190 Q190 240 195 290" stroke="#2a1f1c" stroke-width="8" fill="none" stroke-linecap="round"/>
-                            <path d="M280 190 Q290 240 285 290" stroke="#2a1f1c" stroke-width="8" fill="none" stroke-linecap="round"/>
-                            <circle cx="224" cy="168" r="4" fill="#2a1f1c"/>
-                            <circle cx="256" cy="168" r="4" fill="#2a1f1c"/>
-                            <path d="M222 190 Q240 202 258 190" stroke="#2a1f1c" stroke-width="3" fill="none" stroke-linecap="round"/>
-                        </g>
-                    </svg>
+                    <img
+                        src="{{ url_for('static', filename='images/african-women-community.png') }}"
+                        alt="A diverse group of women standing together in support and connection."
+                        class="hero-image"
+                    >
                 </div>
             </div>
         </section>

@@ -54,9 +54,22 @@ section {
 }
 
 .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     font-size: 1.5rem;
     font-weight: bold;
     color: var(--pink);
+}
+
+.logo-icon {
+    width: 36px;
+    height: 22px;
+    flex-shrink: 0;
+}
+
+.logo-text {
+    line-height: 1;
 }
 
 .nav-links {
@@ -150,13 +163,20 @@ section {
 
 .hero-illustration {
     width: 100%;
-    max-width: 380px;
+    max-width: 420px;
 }
 
-.hero-illustration svg {
+.hero-image {
     width: 100%;
     height: auto;
     display: block;
+    object-fit: contain;
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 88%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 0%, #000 88%, transparent 100%);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
 }
 
 .btn {
@@ -278,7 +298,7 @@ button:focus {
     }
 
     .hero-illustration {
-        flex: 0 0 380px;
+        flex: 0 0 420px;
     }
 }
 
@@ -314,5 +334,14 @@ button:focus {
 
     .hero h1 {
         font-size: 1.7rem;
+    }
+
+    .logo-icon {
+        width: 30px;
+        height: 18px;
+    }
+
+    .logo {
+        font-size: 1.25rem;
     }
 }
