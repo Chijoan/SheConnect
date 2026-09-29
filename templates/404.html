@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('notfound_heading') }} - SheConnect{% endblock %}
+
+{% block content %}
+    <section class="page-section error-page">
+        <span class="icon-badge icon-badge-large" aria-hidden="true"><i class="fa-solid fa-triangle-exclamation"></i></span>
+        <h1>{{ t('notfound_heading') }}</h1>
+        <p>{{ t('notfound_text') }}</p>
+        <a href="{{ url_for('home') }}" class="btn btn-primary">{{ t('return_home_btn') }}</a>
+    </section>
+{% endblock %}

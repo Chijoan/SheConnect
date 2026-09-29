@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('register_page_heading') }} - SheConnect{% endblock %}
+
+{% block content %}
+    <section class="auth-section">
+        <div class="auth-card">
+            <h1>{{ t('register_page_heading') }}</h1>
+            <p class="auth-subtitle">{{ t('register_subtitle') }}</p>
+
+            <form method="POST" action="{{ url_for('register') }}" novalidate class="auth-form">
+                <div class="form-group">
+                    <label for="full_name">{{ t('field_full_name') }}</label>
+                    <input
+                        type="text"
+                        id="full_name"
+                        name="full_name"
+                        value="{{ form_data.full_name if form_data else '' }}"
+                        required
+                    >
+                    {% if errors and errors.full_name %}
+                        <span class="field-error">{{ errors.full_name }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="email">{{ t('field_email') }}</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value="{{ form_data.email if form_data else '' }}"
+                        required
+                    >
+                    {% if errors and errors.email %}
+                        <span class="field-error">{{ errors.email }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="date_of_birth">{{ t('field_dob') }}</label>
+                    <input
+                        type="date"
+                        id="date_of_birth"
+                        name="date_of_birth"
+                        value="{{ form_data.date_of_birth if form_data else '' }}"
+                        max="{{ today }}"
+                        required
+                    >
+                    {% if errors and errors.date_of_birth %}
+                        <span class="field-error">{{ errors.date_of_birth }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="country">{{ t('field_country') }}</label>
+                    <select id="country" name="country" required>
+                        <option value="" disabled {% if not form_data or not form_data.country %}selected{% endif %}>
+                            {{ t('select_country_placeholder') }}
+                        </option>
+                        {% for c in countries %}
+                            <option value="{{ c }}" {% if form_data and form_data.country == c %}selected{% endif %}>{{ c }}</option>
+                        {% endfor %}
+                    </select>
+                    {% if errors and errors.country %}
+                        <span class="field-error">{{ errors.country }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="password">{{ t('field_password') }}</label>
+                    <div class="password-field">
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            minlength="8"
+                            pattern="^[A-Z](?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{7,}$"
+                            autocomplete="new-password"
+                            required
+                        >
+                        <button type="button" class="toggle-password" data-target="password" data-show-text="{{ t('show_password') }}" data-hide-text="{{ t('hide_password') }}" aria-label="{{ t('show_password') }}" aria-pressed="false">{{ t('show_password') }}</button>
+                    </div>
+
+                    <div class="password-strength" aria-hidden="true">
+                        <div class="strength-bar" id="strengthBar"></div>
+                    </div>
+                    <p class="strength-label" id="strengthLabel"></p>
+
+                    <ul class="password-requirements" id="passwordRequirements">
+                        <li data-rule="length">{{ t('pw_req_length') }}</li>
+                        <li data-rule="uppercase">{{ t('pw_req_uppercase') }}</li>
+                        <li data-rule="lowercase">{{ t('pw_req_lowercase') }}</li>
+                        <li data-rule="number">{{ t('pw_req_number') }}</li>
+                        <li data-rule="symbol">{{ t('pw_req_symbol') }}</li>
+                    </ul>
+
+                    {% if errors and errors.password %}
+                        <span class="field-error">{{ errors.password }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm_password">{{ t('field_confirm_password') }}</label>
+                    <div class="password-field">
+                        <input
+                            type="password"
+                            id="confirm_password"
+                            name="confirm_password"
+                            autocomplete="new-password"
+                            required
+                        >
+                        <button type="button" class="toggle-password" data-target="confirm_password" data-show-text="{{ t('show_password') }}" data-hide-text="{{ t('hide_password') }}" aria-label="{{ t('show_password') }}" aria-pressed="false">{{ t('show_password') }}</button>
+                    </div>
+                    {% if errors and errors.confirm_password %}
+                        <span class="field-error">{{ errors.confirm_password }}</span>
+                    {% endif %}
+                </div>
+
+                <button type="submit" class="btn btn-primary auth-submit">{{ t('create_account_btn') }}</button>
+            </form>
+
+            <p class="auth-switch">{{ t('register_have_account_text') }} <a href="{{ url_for('login') }}">{{ t('register_login_link') }}</a></p>
+        </div>
+    </section>
+
+    <script>
+        window.STRENGTH_LABELS = {{ strength_labels | tojson }};
+    </script>
+{% endblock %}

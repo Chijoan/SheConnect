@@ -1,121 +1,80 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SheConnect</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
-<body>
+{% extends "base.html" %}
 
-    <header class="navbar">
-        <div class="nav-container">
-            <a href="{{ url_for('home') }}" class="logo" aria-label="SheConnect home">
-                <svg class="logo-icon" viewBox="0 0 60 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-                    <ellipse cx="22" cy="18" rx="16" ry="10" fill="none" stroke="#d63384" stroke-width="6" transform="rotate(-20 22 18)"/>
-                    <ellipse cx="38" cy="18" rx="16" ry="10" fill="none" stroke="#6f42c1" stroke-width="6" transform="rotate(20 38 18)"/>
-                </svg>
-                <span class="logo-text">SheConnect</span>
-            </a>
+{% block title %}SheConnect - {{ t('home_hero_heading') }}{% endblock %}
 
-            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation menu" aria-expanded="false">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
+{% block content %}
+    <section id="home" class="hero">
+        {% if current_first_name %}
+            <div class="home-greeting">
+                <p class="home-greeting-text">{{ t('home_greeting', name=current_first_name) }}</p>
+                <span class="member-badge"><i class="fa-solid fa-circle-check" aria-hidden="true"></i> {{ t('home_member_badge') }}</span>
+            </div>
+        {% endif %}
 
-            <nav>
-                <ul class="nav-links" id="navLinks">
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#features">Features</a></li>
-                    <li><a href="#emergency">Emergency Help</a></li>
-                    <li><a href="#" class="btn-link">Login</a></li>
-                    <li><a href="#" class="btn-link btn-link-filled">Register</a></li>
-                </ul>
-            </nav>
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>{{ t('home_hero_heading') }}</h1>
+                <p>{{ t('home_hero_intro') }}</p>
+                <div class="hero-buttons">
+                    {% if not current_first_name %}
+                        <a href="{{ url_for('register') }}" class="btn btn-primary">{{ t('home_join_btn') }}</a>
+                    {% endif %}
+                    <a href="{{ url_for('features') }}" class="btn btn-secondary">{{ t('home_explore_features_btn') }}</a>
+                </div>
+            </div>
+
+            <div class="hero-illustration">
+                <img
+                    src="{{ url_for('static', filename='images/african-women-community.png') }}"
+                    alt="A diverse group of women standing together in support and connection."
+                    class="hero-image"
+                >
+            </div>
         </div>
-    </header>
+    </section>
 
-    <main>
-        <section id="home" class="hero">
-            <div class="hero-content">
-                <div class="hero-text">
-                    <h1>A safe space to connect, learn and grow.</h1>
-                    <p>
-                        SheConnect supports women and girls with health information,
-                        safety support, education and community across Africa.
-                    </p>
-                    <div class="hero-buttons">
-                        <a href="#" class="btn btn-primary">Join SheConnect</a>
-                        <a href="#features" class="btn btn-secondary">Explore Features</a>
-                    </div>
-                </div>
+    <section class="home-intro">
+        <h2>{{ t('home_about_heading') }}</h2>
+        <p>{{ t('home_about_text') }}</p>
+        <a href="{{ url_for('about') }}" class="text-link">{{ t('home_learn_more') }}</a>
+    </section>
 
-                <div class="hero-illustration">
-                    <img
-                        src="{{ url_for('static', filename='images/african-women-community.png') }}"
-                        alt="A diverse group of women standing together in support and connection."
-                        class="hero-image"
-                    >
-                </div>
+    <section class="home-preview">
+        <h2>{{ t('home_preview_heading') }}</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <span class="icon-badge" aria-hidden="true"><i class="fa-solid fa-droplet"></i></span>
+                <h3>{{ t('home_preview_card1_title') }}</h3>
+                <p>{{ t('home_preview_card1_text') }}</p>
             </div>
-        </section>
-
-        <section id="about" class="about">
-            <h2>About SheConnect</h2>
-            <p>
-                SheConnect is a digital space created to support African women and girls.
-                Our purpose is to make trusted health information, safety resources,
-                education and community support easier to reach, so that every woman
-                and girl feels informed, supported and connected.
-            </p>
-        </section>
-
-        <section id="features" class="features">
-            <h2>Our Features</h2>
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <h3>Menstrual Health</h3>
-                    <p>Access simple, reliable information about menstrual health and hygiene.</p>
-                </div>
-                <div class="feature-card">
-                    <h3>Report GBV</h3>
-                    <p>A supportive space to learn how to report gender-based violence safely.</p>
-                </div>
-                <div class="feature-card">
-                    <h3>Emergency Support</h3>
-                    <p>Quick access to emergency help resources when they are needed most.</p>
-                </div>
-                <div class="feature-card">
-                    <h3>Community Support</h3>
-                    <p>Connect with a community that listens, understands and uplifts.</p>
-                </div>
-                <div class="feature-card">
-                    <h3>Hygiene Education</h3>
-                    <p>Learn practical hygiene tips for a healthier, more confident life.</p>
-                </div>
-                <div class="feature-card">
-                    <h3>Tech for Girls</h3>
-                    <p>Encouraging girls to explore and grow their skills in technology.</p>
-                </div>
+            <div class="feature-card">
+                <span class="icon-badge" aria-hidden="true"><i class="fa-solid fa-shield-heart"></i></span>
+                <h3>{{ t('home_preview_card2_title') }}</h3>
+                <p>{{ t('home_preview_card2_text') }}</p>
             </div>
-        </section>
+            <div class="feature-card">
+                <span class="icon-badge" aria-hidden="true"><i class="fa-solid fa-people-group"></i></span>
+                <h3>{{ t('home_preview_card3_title') }}</h3>
+                <p>{{ t('home_preview_card3_text') }}</p>
+            </div>
+            <div class="feature-card">
+                <span class="icon-badge" aria-hidden="true"><i class="fa-solid fa-triangle-exclamation"></i></span>
+                <h3>{{ t('home_preview_card4_title') }}</h3>
+                <p>{{ t('home_preview_card4_text') }}</p>
+            </div>
+        </div>
+        <div class="home-preview-action">
+            <a href="{{ url_for('features') }}" class="btn btn-secondary">{{ t('home_see_all_features') }}</a>
+        </div>
+    </section>
 
-        <section id="emergency" class="emergency">
-            <h2>Emergency Help</h2>
-            <p>
-                If you are in danger or need urgent support, help resources will be made
-                available here soon. This section is being prepared to connect you with
-                the right support as quickly as possible.
-            </p>
-        </section>
-    </main>
-
-    <footer class="footer">
-        <p>&copy; 2026 SheConnect. A safe digital space for women and girls.</p>
-    </footer>
-
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
-</body>
-</html>
+    <section class="home-cta">
+        <h2>{{ t('home_cta_heading') }}</h2>
+        <p>{{ t('home_cta_text') }}</p>
+        {% if current_first_name %}
+            <a href="{{ url_for('dashboard') }}" class="btn btn-primary">{{ t('home_go_dashboard_btn') }}</a>
+        {% else %}
+            <a href="{{ url_for('register') }}" class="btn btn-primary">{{ t('home_join_btn') }}</a>
+        {% endif %}
+    </section>
+{% endblock %}

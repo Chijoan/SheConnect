@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('about_page_heading') }} - SheConnect{% endblock %}
+
+{% block content %}
+    <section class="page-header">
+        <h1>{{ t('about_page_heading') }}</h1>
+        <p>{{ t('about_subtitle') }}</p>
+    </section>
+
+    <section class="page-section">
+        <h2>{{ t('about_what_heading') }}</h2>
+        <p>{{ t('about_what_text') }}</p>
+    </section>
+
+    <section class="page-section">
+        <h2>{{ t('about_mission_heading') }}</h2>
+        <p>{{ t('about_mission_text') }}</p>
+    </section>
+
+    <section class="page-section">
+        <h2>{{ t('about_who_heading') }}</h2>
+        <p>{{ t('about_who_text') }}</p>
+    </section>
+
+    <section class="page-section page-section-highlight">
+        <h2>{{ t('about_values_heading') }}</h2>
+        <div class="value-grid">
+            <div class="value-card">
+                <h3>{{ t('value_privacy_title') }}</h3>
+                <p>{{ t('value_privacy_text') }}</p>
+            </div>
+            <div class="value-card">
+                <h3>{{ t('value_safety_title') }}</h3>
+                <p>{{ t('value_safety_text') }}</p>
+            </div>
+            <div class="value-card">
+                <h3>{{ t('value_dignity_title') }}</h3>
+                <p>{{ t('value_dignity_text') }}</p>
+            </div>
+            <div class="value-card">
+                <h3>{{ t('value_empowerment_title') }}</h3>
+                <p>{{ t('value_empowerment_text') }}</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="page-cta">
+        <h2>{{ t('about_cta_heading') }}</h2>
+        <p>{{ t('about_cta_text') }}</p>
+        {% if current_first_name %}
+            <a href="{{ url_for('dashboard') }}" class="btn btn-primary">{{ t('home_go_dashboard_btn') }}</a>
+        {% else %}
+            <a href="{{ url_for('register') }}" class="btn btn-primary">{{ t('join_btn') }}</a>
+        {% endif %}
+    </section>
+{% endblock %}

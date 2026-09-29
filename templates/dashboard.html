@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('dashboard_heading') }} - SheConnect{% endblock %}
+
+{% block content %}
+    <section class="page-header page-header-compact">
+        <h1>{{ t('dashboard_heading') }}</h1>
+        <p>{{ t('dashboard_subtext') }}</p>
+        <a href="{{ url_for('profile') }}" class="btn btn-secondary btn-small">
+            <i class="fa-solid fa-user" aria-hidden="true"></i> {{ t('view_profile_btn') }}
+        </a>
+    </section>
+
+    <section class="page-section">
+        <div class="summary-grid">
+            <div class="summary-card">
+                <span class="icon-badge" aria-hidden="true"><i class="fa-solid fa-credit-card"></i></span>
+                <div>
+                    <p class="summary-label">{{ t('current_plan_label') }}</p>
+                    <p class="summary-value">{{ t('free_value') }}</p>
+                </div>
+            </div>
+            <div class="summary-card">
+                <span class="icon-badge" aria-hidden="true"><i class="fa-solid fa-circle-check"></i></span>
+                <div>
+                    <p class="summary-label">{{ t('membership_label') }}</p>
+                    <p class="summary-value">{{ t('active_value') }}</p>
+                </div>
+            </div>
+            <div class="summary-card">
+                <span class="icon-badge" aria-hidden="true"><i class="fa-solid fa-folder-open"></i></span>
+                <div>
+                    <p class="summary-label">{{ t('available_resources_label') }}</p>
+                    <p class="summary-value">{{ resource_count }}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="page-section">
+        <h2>{{ t('quick_actions_heading') }}</h2>
+        <div class="feature-grid feature-grid-full">
+            {% for action in quick_actions %}
+                <div class="feature-card">
+                    <span class="icon-badge" aria-hidden="true"><i class="fa-solid {{ action.icon }}"></i></span>
+                    <h3>{{ action.title }}</h3>
+                    <p>{{ action.description }}</p>
+                    <a href="{{ url_for(action.endpoint) }}" class="btn btn-secondary">{{ action.label }}</a>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="page-section">
+        <h2><i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i> {{ t('recent_activity_heading') }}</h2>
+        <div class="empty-state">
+            <span class="icon-badge icon-badge-large" aria-hidden="true"><i class="fa-solid fa-inbox"></i></span>
+            <p>{{ t('no_recent_activity') }}</p>
+        </div>
+    </section>
+{% endblock %}

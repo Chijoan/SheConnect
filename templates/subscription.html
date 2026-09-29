@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('subscription_heading') }} - SheConnect{% endblock %}
+
+{% block content %}
+    <section class="page-header">
+        <h1>{{ t('subscription_heading') }}</h1>
+        <p>{{ t('subscription_subtitle') }}</p>
+    </section>
+
+    <section class="page-section">
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <span class="icon-badge" aria-hidden="true"><i class="fa-solid fa-seedling"></i></span>
+                <h2>{{ t('plan_free') }}</h2>
+                <p class="pricing-price">{{ t('free_value') }}</p>
+                {% if current_first_name %}
+                    <span class="plan-badge">{{ t('current_plan_badge') }}</span>
+                {% endif %}
+                <ul class="pricing-features">
+                    <li><i class="fa-solid fa-check" aria-hidden="true"></i> {{ t('free_feat1') }}</li>
+                    <li><i class="fa-solid fa-check" aria-hidden="true"></i> {{ t('free_feat2') }}</li>
+                    <li><i class="fa-solid fa-check" aria-hidden="true"></i> {{ t('free_feat3') }}</li>
+                </ul>
+                {% if current_first_name %}
+                    <button type="button" class="btn btn-secondary" disabled>{{ t('your_current_plan_btn') }}</button>
+                {% else %}
+                    <a href="{{ url_for('register') }}" class="btn btn-secondary">{{ t('join_free_btn') }}</a>
+                {% endif %}
+            </div>
+
+            <div class="pricing-card pricing-card-highlight">
+                <span class="icon-badge" aria-hidden="true"><i class="fa-solid fa-star"></i></span>
+                <h2>{{ t('plan_pro') }}</h2>
+                <p class="pricing-price">$4.99<span>{{ t('demo_price_suffix') }}</span></p>
+                <ul class="pricing-features">
+                    <li><i class="fa-solid fa-check" aria-hidden="true"></i> {{ t('pro_feat1') }}</li>
+                    <li><i class="fa-solid fa-check" aria-hidden="true"></i> {{ t('pro_feat2') }}</li>
+                    <li><i class="fa-solid fa-check" aria-hidden="true"></i> {{ t('pro_feat3') }}</li>
+                    <li><i class="fa-solid fa-check" aria-hidden="true"></i> {{ t('pro_feat4') }}</li>
+                </ul>
+                <button type="button" class="btn btn-disabled" disabled>{{ t('coming_soon_btn') }}</button>
+            </div>
+
+            <div class="pricing-card">
+                <span class="icon-badge" aria-hidden="true"><i class="fa-solid fa-crown"></i></span>
+                <h2>{{ t('plan_premium') }}</h2>
+                <p class="pricing-price">$9.99<span>{{ t('demo_price_suffix') }}</span></p>
+                <ul class="pricing-features">
+                    <li><i class="fa-solid fa-check" aria-hidden="true"></i> {{ t('premium_feat1') }}</li>
+                    <li><i class="fa-solid fa-check" aria-hidden="true"></i> {{ t('premium_feat2') }}</li>
+                    <li><i class="fa-solid fa-check" aria-hidden="true"></i> {{ t('premium_feat3') }}</li>
+                    <li><i class="fa-solid fa-check" aria-hidden="true"></i> {{ t('premium_feat4') }}</li>
+                </ul>
+                <button type="button" class="btn btn-disabled" disabled>{{ t('coming_soon_btn') }}</button>
+            </div>
+        </div>
+
+        <p class="pricing-disclaimer">{{ t('pricing_disclaimer') }}</p>
+    </section>
+{% endblock %}

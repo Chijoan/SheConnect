@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('features_page_heading') }} - SheConnect{% endblock %}
+
+{% block content %}
+    <section class="page-header">
+        <h1>{{ t('features_page_heading') }}</h1>
+        <p>{{ t('features_subtitle') }}</p>
+    </section>
+
+    <section class="page-section">
+        <div class="feature-grid feature-grid-full">
+            {% for card in feature_cards %}
+                <div class="feature-card">
+                    <span class="icon-badge" aria-hidden="true"><i class="fa-solid {{ card.icon }}"></i></span>
+                    <h3>{{ card.title }}</h3>
+                    <p>{{ card.description }}</p>
+                    {% if card.status == "live" %}
+                        <a href="{{ url_for(card.endpoint) }}" class="btn btn-secondary">{{ card.label }}</a>
+                    {% else %}
+                        <button type="button" class="btn btn-disabled" disabled>{{ t('coming_soon_btn') }}</button>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,9 @@
+Font Awesome Free 6.5.1
+by @fontawesome - https://fontawesome.com
+License - https://fontawesome.com/license/free
+  (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
+Copyright 2023 Fonticons, Inc.
+
+Only the "solid" icon style and its webfont files are vendored in this
+directory (static/vendor/fontawesome), self-hosted for offline use in the
+SheConnect project.

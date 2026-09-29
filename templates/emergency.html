@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('emergency_heading') }} - SheConnect{% endblock %}
+
+{% block content %}
+    <section class="emergency-hero">
+        <span class="icon-badge icon-badge-large icon-badge-on-dark" aria-hidden="true"><i class="fa-solid fa-triangle-exclamation"></i></span>
+        <h1>{{ t('emergency_heading') }}</h1>
+        <p class="emergency-lead">{{ t('emergency_lead') }}</p>
+        <button type="button" class="btn btn-secondary quick-exit-btn" id="quickExitBtn">
+            <i class="fa-solid fa-arrow-right-from-bracket" aria-hidden="true"></i> {{ t('quick_exit_btn') }}
+        </button>
+        <p class="quick-exit-hint">{{ t('quick_exit_hint') }}</p>
+    </section>
+
+    <section class="page-section">
+        <h2><i class="fa-solid fa-phone" aria-hidden="true"></i> {{ t('emergency_resources_heading') }}</h2>
+        <p>{{ t('emergency_resources_text') }}</p>
+    </section>
+
+    <section class="page-section">
+        <h2><i class="fa-solid fa-shield-heart" aria-hidden="true"></i> {{ t('staying_safe_heading') }}</h2>
+        <div class="safety-grid">
+            <div class="safety-card">
+                <span class="icon-badge" aria-hidden="true"><i class="fa-solid fa-shield-heart"></i></span>
+                <h3>{{ t('safety1_title') }}</h3>
+                <p>{{ t('safety1_text') }}</p>
+            </div>
+            <div class="safety-card">
+                <span class="icon-badge" aria-hidden="true"><i class="fa-solid fa-location-dot"></i></span>
+                <h3>{{ t('safety2_title') }}</h3>
+                <p>{{ t('safety2_text') }}</p>
+            </div>
+            <div class="safety-card">
+                <span class="icon-badge" aria-hidden="true"><i class="fa-solid fa-shield-heart"></i></span>
+                <h3>{{ t('safety3_title') }}</h3>
+                <p>{{ t('safety3_text') }}</p>
+            </div>
+            <div class="safety-card">
+                <span class="icon-badge" aria-hidden="true"><i class="fa-solid fa-arrow-right-from-bracket"></i></span>
+                <h3>{{ t('safety4_title') }}</h3>
+                <p>{{ t('safety4_text') }}</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="page-section">
+        <div class="emergency-warning">
+            <p>{{ t('emergency_warning_text') }}</p>
+        </div>
+    </section>
+{% endblock %}
