@@ -4,6 +4,11 @@ A Flask and SQLite web platform that brings together health information,
 safety support, education and community into one connected space for
 African women and girls.
 
+## Live Website
+
+SheConnect is deployed on Render and can be accessed through this link:
+https://sheconnect-bzna.onrender.com/
+
 ## Overview and Purpose
 
 SheConnect exists to make it easier for African women and girls to find
@@ -275,4 +280,4 @@ https://github.com/Chijoan/SheConnect
 
 ## Deployed Website
 
-_Not yet deployed. Link will be added here once the site is live._
+https://sheconnect-bzna.onrender.com/
