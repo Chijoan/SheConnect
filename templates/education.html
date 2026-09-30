@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('education_heading') }} - SheConnect{% endblock %}
+
+{% block content %}
+    <section class="page-header">
+        <h1>{{ t('education_heading') }}</h1>
+        <p>{{ t('education_subtitle') }}</p>
+    </section>
+
+    <section class="page-section">
+        <div class="edu-tabs" role="tablist">
+            <button type="button" class="edu-tab edu-tab-active" id="tabCourses" role="tab"
+                    aria-selected="true" aria-controls="panelCourses" data-target="panelCourses">
+                <i class="fa-solid fa-laptop-code" aria-hidden="true"></i> {{ t('tech_courses_tab') }}
+            </button>
+            <button type="button" class="edu-tab" id="tabScholarships" role="tab"
+                    aria-selected="false" aria-controls="panelScholarships" data-target="panelScholarships">
+                <i class="fa-solid fa-graduation-cap" aria-hidden="true"></i> {{ t('scholarship_tab') }}
+            </button>
+        </div>
+    </section>
+
+    <section class="page-section" id="panelCourses" role="tabpanel" aria-labelledby="tabCourses">
+        <div class="summary-grid">
+            <div class="summary-card">
+                <span class="icon-badge" aria-hidden="true"><i class="fa-solid fa-list-check"></i></span>
+                <div>
+                    <p class="history-item-title">{{ t('progress_summary_label', completed=completed_count, total=total_courses) }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="feature-grid feature-grid-full edu-course-grid">
+            {% for course in courses %}
+                <div class="feature-card resource-card">
+                    <span class="icon-badge" aria-hidden="true"><i class="fa-solid {{ course.icon }}"></i></span>
+                    {% if course.is_completed %}
+                        <span class="resource-category-tag course-status-tag course-status-completed">
+                            <i class="fa-solid fa-circle-check" aria-hidden="true"></i> {{ t('completed_label') }}
+                        </span>
+                    {% else %}
+                        <span class="resource-category-tag course-status-tag course-status-not-started">
+                            <i class="fa-solid fa-circle-xmark" aria-hidden="true"></i> {{ t('not_started_label') }}
+                        </span>
+                    {% endif %}
+                    <h3>{{ course.title }}</h3>
+                    <p>{{ course.description }}</p>
+                    <p class="course-meta">
+                        <span><i class="fa-solid fa-signal" aria-hidden="true"></i> {{ course.difficulty }}</span>
+                        <span><i class="fa-solid fa-clock" aria-hidden="true"></i> {{ course.duration }}</span>
+                    </p>
+                    {% if course.is_completed %}
+                        <a href="{{ url_for('course_lesson', slug=course.slug, lesson_num=1) }}" class="btn btn-secondary">{{ t('review_course_btn') }}</a>
+                    {% else %}
+                        <a href="{{ url_for('course_lesson', slug=course.slug, lesson_num=1) }}" class="btn btn-secondary">{{ t('start_learning_btn') }}</a>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="page-section" id="panelScholarships" role="tabpanel" aria-labelledby="tabScholarships" hidden>
+        <div class="feature-grid feature-grid-full edu-scholarship-grid">
+            {% for scholarship in scholarships %}
+                <div class="feature-card resource-card edu-scholarship-card">
+                    <span class="icon-badge" aria-hidden="true"><i class="fa-solid {{ scholarship.icon }}"></i></span>
+                    <h3>{{ scholarship.name }}</h3>
+                    <p>{{ scholarship.description }}</p>
+                    <p class="course-meta">
+                        <span><i class="fa-solid fa-graduation-cap" aria-hidden="true"></i> {{ scholarship.level }}</span>
+                    </p>
+                    <a href="{{ url_for('scholarship_detail', slug=scholarship.slug) }}" class="btn btn-secondary">{{ t('learn_more_btn') }}</a>
+                </div>
+            {% endfor %}
+        </div>
+
+        <p class="pricing-disclaimer">{{ t('scholarship_disclaimer') }}</p>
+    </section>
+{% endblock %}

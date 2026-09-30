@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}{{ article.title }} - SheConnect{% endblock %}
+
+{% block content %}
+    <section class="page-section">
+        <a href="{{ url_for('health_resources') }}" class="back-link article-back-link">
+            <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> {{ t('back_to_health_resources') }}
+        </a>
+
+        <div class="tracker-card article-card">
+            <span class="icon-badge icon-badge-large" aria-hidden="true"><i class="fa-solid {{ article.icon }}"></i></span>
+            <span class="resource-category-tag">{{ article.category_label }}</span>
+            <h1>{{ article.title }}</h1>
+            <p class="article-summary">{{ article.summary }}</p>
+
+            <div class="article-body">
+                {% for paragraph in article.body %}
+                    <p>{{ paragraph }}</p>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

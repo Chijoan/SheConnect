@@ -16,7 +16,7 @@
                     <h3>{{ card.title }}</h3>
                     <p>{{ card.description }}</p>
                     {% if card.status == "live" %}
-                        <a href="{{ url_for(card.endpoint) }}" class="btn btn-secondary">{{ card.label }}</a>
+                        <a href="{{ url_for(card.endpoint, **card.get('endpoint_args', {})) }}" class="btn btn-secondary">{{ card.label }}</a>
                     {% else %}
                         <button type="button" class="btn btn-disabled" disabled>{{ t('coming_soon_btn') }}</button>
                     {% endif %}

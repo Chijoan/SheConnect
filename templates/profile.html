@@ -14,44 +14,101 @@
             <h2>{{ current_full_name }}</h2>
             <span class="member-badge"><i class="fa-solid fa-circle-check" aria-hidden="true"></i> {{ t('home_member_badge') }}</span>
 
-            <dl class="profile-details">
-                <div class="profile-detail-row">
-                    <dt><i class="fa-solid fa-user" aria-hidden="true"></i> {{ t('field_full_name') }}</dt>
-                    <dd>{{ current_full_name }}</dd>
-                </div>
-                <div class="profile-detail-row">
-                    <dt><i class="fa-solid fa-envelope" aria-hidden="true"></i> {{ t('field_email') }}</dt>
-                    <dd>{{ member_email }}</dd>
-                </div>
-                <div class="profile-detail-row">
-                    <dt><i class="fa-solid fa-calendar-days" aria-hidden="true"></i> {{ t('field_dob') }}</dt>
-                    <dd>{{ member_date_of_birth }}</dd>
-                </div>
-                <div class="profile-detail-row">
-                    <dt><i class="fa-solid fa-earth-africa" aria-hidden="true"></i> {{ t('field_country') }}</dt>
-                    <dd>{{ member_country }}</dd>
-                </div>
-                <div class="profile-detail-row">
-                    <dt><i class="fa-solid fa-circle-check" aria-hidden="true"></i> {{ t('member_status_label') }}</dt>
-                    <dd>{{ t('active_value') }}</dd>
-                </div>
-                <div class="profile-detail-row">
-                    <dt><i class="fa-solid fa-credit-card" aria-hidden="true"></i> {{ t('current_plan_label') }}</dt>
-                    <dd>{{ t('free_value') }}</dd>
-                </div>
-                <div class="profile-detail-row">
-                    <dt><i class="fa-solid fa-wifi" aria-hidden="true"></i> {{ t('connected_status_label') }}</dt>
-                    <dd>{{ t('connected_word') }}</dd>
-                </div>
-            </dl>
+            {% if success_message %}
+                <div class="alert alert-success">{{ success_message }}</div>
+            {% endif %}
 
-            <div class="profile-actions">
-                <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">
-                    <i class="fa-solid fa-table-columns" aria-hidden="true"></i> {{ t('return_dashboard_btn') }}
-                </a>
-                <a href="{{ url_for('logout') }}" class="btn btn-primary">
-                    <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i> {{ t('nav_logout') }}
-                </a>
+            <div id="profileViewBlock" {% if show_edit_mode %}hidden{% endif %}>
+                <dl class="profile-details">
+                    <div class="profile-detail-row">
+                        <dt><i class="fa-solid fa-user" aria-hidden="true"></i> {{ t('field_full_name') }}</dt>
+                        <dd>{{ member_full_name }}</dd>
+                    </div>
+                    <div class="profile-detail-row">
+                        <dt><i class="fa-solid fa-envelope" aria-hidden="true"></i> {{ t('field_email') }}</dt>
+                        <dd>{{ member_email }}</dd>
+                    </div>
+                    <div class="profile-detail-row">
+                        <dt><i class="fa-solid fa-calendar-days" aria-hidden="true"></i> {{ t('field_dob') }}</dt>
+                        <dd>{{ member_date_of_birth }}</dd>
+                    </div>
+                    <div class="profile-detail-row">
+                        <dt><i class="fa-solid fa-earth-africa" aria-hidden="true"></i> {{ t('field_country') }}</dt>
+                        <dd>{{ member_country }}</dd>
+                    </div>
+                    <div class="profile-detail-row">
+                        <dt><i class="fa-solid fa-circle-check" aria-hidden="true"></i> {{ t('member_status_label') }}</dt>
+                        <dd>{{ t('active_value') }}</dd>
+                    </div>
+                    <div class="profile-detail-row">
+                        <dt><i class="fa-solid fa-credit-card" aria-hidden="true"></i> {{ t('current_plan_label') }}</dt>
+                        <dd>{{ t('free_value') }}</dd>
+                    </div>
+                    <div class="profile-detail-row">
+                        <dt><i class="fa-solid fa-wifi" aria-hidden="true"></i> {{ t('connected_status_label') }}</dt>
+                        <dd>{{ t('connected_word') }}</dd>
+                    </div>
+                </dl>
+
+                <div class="profile-actions">
+                    <button type="button" id="editProfileBtn" class="btn btn-primary">
+                        <i class="fa-solid fa-pen" aria-hidden="true"></i> {{ t('edit_profile_heading') }}
+                    </button>
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">
+                        <i class="fa-solid fa-table-columns" aria-hidden="true"></i> {{ t('return_dashboard_btn') }}
+                    </a>
+                    <a href="{{ url_for('logout') }}" class="btn btn-secondary">
+                        <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i> {{ t('nav_logout') }}
+                    </a>
+                </div>
+            </div>
+
+            <div id="profileEditBlock" {% if not show_edit_mode %}hidden{% endif %}>
+                <h3 class="profile-edit-heading">{{ t('edit_profile_heading') }}</h3>
+                <p class="profile-edit-intro">{{ t('edit_profile_intro') }}</p>
+
+                <form id="profileEditForm" method="POST" action="{{ url_for('profile') }}" novalidate class="auth-form profile-edit-form">
+                    <div class="form-group">
+                        <label for="full_name"><i class="fa-solid fa-user" aria-hidden="true"></i> {{ t('field_full_name') }}</label>
+                        <input type="text" id="full_name" name="full_name" value="{{ form_data.full_name }}" required>
+                        {% if errors.full_name %}
+                            <span class="field-error">{{ errors.full_name }}</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email"><i class="fa-solid fa-envelope" aria-hidden="true"></i> {{ t('field_email') }}</label>
+                        <input type="email" id="email" value="{{ member_email }}" disabled>
+                        <small class="field-hint">{{ t('email_readonly_hint') }}</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="date_of_birth"><i class="fa-solid fa-calendar-days" aria-hidden="true"></i> {{ t('field_dob') }}</label>
+                        <input type="date" id="date_of_birth" name="date_of_birth" value="{{ form_data.date_of_birth }}" max="{{ today }}" required>
+                        {% if errors.date_of_birth %}
+                            <span class="field-error">{{ errors.date_of_birth }}</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="country"><i class="fa-solid fa-earth-africa" aria-hidden="true"></i> {{ t('field_country') }}</label>
+                        <select id="country" name="country" required>
+                            {% for c in countries %}
+                                <option value="{{ c }}" {% if form_data.country == c %}selected{% endif %}>{{ c }}</option>
+                            {% endfor %}
+                        </select>
+                        {% if errors.country %}
+                            <span class="field-error">{{ errors.country }}</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="profile-actions">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa-solid fa-floppy-disk" aria-hidden="true"></i> {{ t('save_changes_btn') }}
+                        </button>
+                        <button type="button" id="cancelEditBtn" class="btn btn-secondary">{{ t('cancel_btn') }}</button>
+                    </div>
+                </form>
             </div>
         </div>
     </section>

@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}{{ lesson.title }} - {{ course.title }} - SheConnect{% endblock %}
+
+{% block content %}
+    <section class="page-section">
+        <a href="{{ url_for('education') }}" class="back-link article-back-link">
+            <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> {{ t('back_to_education') }}
+        </a>
+
+        <div class="tracker-card article-card">
+            <span class="icon-badge icon-badge-large" aria-hidden="true"><i class="fa-solid {{ course.icon }}"></i></span>
+
+            <span class="resource-category-tag">{{ t('lesson_progress_label', current=lesson.number, total=lesson.total) }}</span>
+            {% if is_completed %}
+                <span class="resource-category-tag course-status-tag course-status-completed">
+                    <i class="fa-solid fa-circle-check" aria-hidden="true"></i> {{ t('completed_label') }}
+                </span>
+            {% endif %}
+
+            <p class="lesson-course-title">{{ course.title }}</p>
+            <h1>{{ lesson.title }}</h1>
+
+            <div class="article-body">
+                {% for paragraph in lesson.explanation %}
+                    <p>{{ paragraph }}</p>
+                {% endfor %}
+            </div>
+
+            <div class="lesson-callout">
+                <h3><i class="fa-solid fa-lightbulb" aria-hidden="true"></i> {{ t('example_heading') }}</h3>
+                <p>{{ lesson.example }}</p>
+            </div>
+
+            <div class="lesson-callout lesson-callout-activity">
+                <h3><i class="fa-solid fa-pen" aria-hidden="true"></i> {{ t('try_it_yourself_heading') }}</h3>
+                <p>{{ lesson.activity }}</p>
+            </div>
+
+            <div class="lesson-nav">
+                {% if prev_num %}
+                    <a href="{{ url_for('course_lesson', slug=course.slug, lesson_num=prev_num) }}" class="btn btn-secondary">
+                        <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> {{ t('previous_lesson_btn') }}
+                    </a>
+                {% endif %}
+                {% if next_num %}
+                    <a href="{{ url_for('course_lesson', slug=course.slug, lesson_num=next_num) }}" class="btn btn-primary">
+                        {{ t('next_lesson_btn') }} <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                    </a>
+                {% endif %}
+            </div>
+
+            {% if is_final and not is_completed %}
+                <form method="POST" action="{{ url_for('complete_course', slug=course.slug) }}" class="lesson-complete-form">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa-solid fa-circle-check" aria-hidden="true"></i> {{ t('mark_complete_btn') }}
+                    </button>
+                </form>
+            {% endif %}
+        </div>
+    </section>
+{% endblock %}

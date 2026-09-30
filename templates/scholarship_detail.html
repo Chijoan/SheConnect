@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}{{ scholarship.name }} - SheConnect{% endblock %}
+
+{% block content %}
+    <section class="page-section">
+        <a href="{{ url_for('education') }}" class="back-link article-back-link">
+            <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> {{ t('back_to_education') }}
+        </a>
+
+        <div class="tracker-card article-card">
+            <span class="icon-badge icon-badge-large" aria-hidden="true"><i class="fa-solid {{ scholarship.icon }}"></i></span>
+            <h1>{{ scholarship.name }}</h1>
+            <p class="article-summary">{{ scholarship.description }}</p>
+
+            <div class="scholarship-detail-list">
+                <p><i class="fa-solid fa-circle-check" aria-hidden="true"></i> <strong>{{ scholarship.eligibility }}</strong></p>
+                <p><i class="fa-solid fa-graduation-cap" aria-hidden="true"></i> {{ scholarship.level }}</p>
+                <p><i class="fa-solid fa-circle-info" aria-hidden="true"></i> {{ scholarship.status }}</p>
+            </div>
+
+            <p class="pricing-disclaimer">{{ t('scholarship_disclaimer') }}</p>
+        </div>
+    </section>
+{% endblock %}

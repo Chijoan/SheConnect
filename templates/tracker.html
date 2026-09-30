@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+
+{% block title %}Cycle Tracker - SheConnect{% endblock %}
+
+{% block content %}
+    <section class="page-header page-header-compact">
+        <h1>Cycle Tracker</h1>
+        <p>Track your period, cycle length, symptoms and mood. Only you can see this information.</p>
+    </section>
+
+    {% if success_message %}
+        <section class="page-section tracker-message-section">
+            <div class="alert alert-success">{{ success_message }}</div>
+        </section>
+    {% endif %}
+
+    <section class="page-section">
+        <div class="tracker-grid">
+            <div class="tracker-card">
+                <span class="icon-badge" aria-hidden="true"><i class="fa-solid fa-calendar-days"></i></span>
+                <h2>Log Your Period</h2>
+
+                <form method="POST" action="{{ url_for('tracker') }}" novalidate class="auth-form">
+                    <input type="hidden" name="form_type" value="cycle">
+
+                    <div class="form-group">
+                        <label for="start_date">First day of your last period</label>
+                        <input type="date" id="start_date" name="start_date" max="{{ today }}" required>
+                        {% if errors.start_date %}
+                            <span class="field-error">{{ errors.start_date }}</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cycle_length">Average cycle length</label>
+                        <select id="cycle_length" name="cycle_length" required>
+                            {% for n in range(21, 36) %}
+                                <option value="{{ n }}" {% if n == 28 %}selected{% endif %}>{{ n }} days</option>
+                            {% endfor %}
+                        </select>
+                        {% if errors.cycle_length %}
+                            <span class="field-error">{{ errors.cycle_length }}</span>
+                        {% endif %}
+                    </div>
+
+                    <button type="submit" class="btn btn-primary auth-submit">Save Period</button>
+                </form>
+
+                {% if latest_cycle %}
+                    <div class="tracker-prediction">
+                        <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+                        Predicted next period:
+                        <strong>{{ latest_cycle.predicted_next_period.strftime('%d %B %Y') }}</strong>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="tracker-card">
+                <span class="icon-badge" aria-hidden="true"><i class="fa-solid fa-face-smile"></i></span>
+                <h2>Record Symptoms &amp; Mood</h2>
+
+                {% if not latest_cycle %}
+                    <p class="tracker-hint">Log your period above first, then you can start recording symptoms and mood.</p>
+                {% else %}
+                    {% if errors.symptom_form %}
+                        <span class="field-error">{{ errors.symptom_form }}</span>
+                    {% endif %}
+                    <form method="POST" action="{{ url_for('tracker') }}" novalidate class="auth-form">
+                        <input type="hidden" name="form_type" value="symptom">
+
+                        <div class="form-group">
+                            <label for="record_date">Date</label>
+                            <input type="date" id="record_date" name="record_date" max="{{ today }}" value="{{ today }}" required>
+                            {% if errors.record_date %}
+                                <span class="field-error">{{ errors.record_date }}</span>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="symptom">Symptom</label>
+                            <select id="symptom" name="symptom" required>
+                                <option value="" disabled selected>Select a symptom</option>
+                                {% for s in symptom_options %}
+                                    <option value="{{ s }}">{{ s }}</option>
+                                {% endfor %}
+                            </select>
+                            {% if errors.symptom %}
+                                <span class="field-error">{{ errors.symptom }}</span>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="mood">Mood</label>
+                            <select id="mood" name="mood" required>
+                                <option value="" disabled selected>Select your mood</option>
+                                {% for m in mood_options %}
+                                    <option value="{{ m.value }}">{{ m.emoji }} {{ m.value }}</option>
+                                {% endfor %}
+                            </select>
+                            {% if errors.mood %}
+                                <span class="field-error">{{ errors.mood }}</span>
+                            {% endif %}
+                        </div>
+
+                        <button type="submit" class="btn btn-primary auth-submit">Save Symptom</button>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <section class="page-section">
+        <h2><i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i> Your Cycle History</h2>
+        {% if cycles %}
+            <div class="history-list">
+                {% for c in cycles %}
+                    <div class="history-item">
+                        <span class="icon-badge" aria-hidden="true"><i class="fa-solid fa-calendar-days"></i></span>
+                        <div class="history-item-body">
+                            <p class="history-item-title">Started {{ c.start_date.strftime('%d %B %Y') }}</p>
+                            <p class="history-item-meta">
+                                Cycle length: {{ c.cycle_length }} days &bull;
+                                Predicted next period: {{ c.predicted_next_period.strftime('%d %B %Y') }}
+                            </p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <span class="icon-badge icon-badge-large" aria-hidden="true"><i class="fa-solid fa-inbox"></i></span>
+                <p>No cycle records yet.</p>
+            </div>
+        {% endif %}
+    </section>
+
+    <section class="page-section">
+        <h2><i class="fa-solid fa-notes-medical" aria-hidden="true"></i> Your Symptom &amp; Mood History</h2>
+        {% if symptom_records %}
+            <div class="history-list">
+                {% for r in symptom_records %}
+                    <div class="history-item">
+                        <span class="icon-badge" aria-hidden="true"><i class="fa-solid fa-face-smile"></i></span>
+                        <div class="history-item-body">
+                            <p class="history-item-title">{{ r.record_date.strftime('%d %B %Y') }}</p>
+                            <p class="history-item-meta">Symptom: {{ r.symptom }} &bull; Mood: {{ r.mood }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <span class="icon-badge icon-badge-large" aria-hidden="true"><i class="fa-solid fa-inbox"></i></span>
+                <p>No symptom records yet.</p>
+            </div>
+        {% endif %}
+    </section>
+{% endblock %}

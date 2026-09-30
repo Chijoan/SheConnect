@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('notifications_heading') }} - SheConnect{% endblock %}
+
+{% block content %}
+    <section class="page-header page-header-compact">
+        <h1>{{ t('notifications_heading') }}</h1>
+        <p>{{ t('notifications_subtitle') }}</p>
+        {% if notifications %}
+            <form method="POST" action="{{ url_for('mark_all_notifications_read') }}">
+                <button type="submit" class="btn btn-secondary btn-small">
+                    <i class="fa-solid fa-check-double" aria-hidden="true"></i> {{ t('mark_all_read_btn') }}
+                </button>
+            </form>
+        {% endif %}
+    </section>
+
+    <section class="page-section">
+        {% if notifications %}
+            <div class="notification-list">
+                {% for n in notifications %}
+                    <div class="notification-item {% if not n.is_read %}notification-item-unread{% endif %}">
+                        <span class="icon-badge" aria-hidden="true">
+                            <i class="fa-solid {% if n.is_read %}fa-envelope-open{% else %}fa-envelope{% endif %}"></i>
+                        </span>
+                        <div class="notification-item-body">
+                            <a href="{{ url_for('open_notification', notification_id=n.id) }}" class="notification-message">
+                                {% if not n.is_read %}<span class="notification-new-tag">{{ t('new_label') }}</span>{% endif %}
+                                {{ n.message }}
+                            </a>
+                            <p class="history-item-meta">{{ n.created_at.strftime('%d %B %Y, %H:%M') }}</p>
+                        </div>
+                        <div class="notification-item-actions">
+                            {% if not n.is_read %}
+                                <form method="POST" action="{{ url_for('mark_notification_read', notification_id=n.id) }}">
+                                    <button type="submit" class="btn btn-small btn-secondary">{{ t('mark_read_btn') }}</button>
+                                </form>
+                            {% endif %}
+                            <form method="POST" action="{{ url_for('delete_notification', notification_id=n.id) }}"
+                                  onsubmit="return confirm('{{ t('delete_notification_confirm') }}');">
+                                <button type="submit" class="btn btn-small btn-secondary notification-delete-btn">
+                                    <i class="fa-solid fa-trash" aria-hidden="true"></i> {{ t('delete_notification_btn') }}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <span class="icon-badge icon-badge-large" aria-hidden="true"><i class="fa-solid fa-bell"></i></span>
+                <p>{{ t('empty_state_notifications') }}</p>
+            </div>
+        {% endif %}
+    </section>
+{% endblock %}

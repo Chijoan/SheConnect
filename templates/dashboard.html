@@ -12,6 +12,28 @@
     </section>
 
     <section class="page-section">
+        <div class="site-search">
+            <label for="siteSearchInput" class="sr-only">{{ t('dashboard_search_label') }}</label>
+            <div class="site-search-box">
+                <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                <input
+                    type="text"
+                    id="siteSearchInput"
+                    class="site-search-input"
+                    placeholder="{{ t('dashboard_search_placeholder') }}"
+                    role="combobox"
+                    aria-expanded="false"
+                    aria-autocomplete="list"
+                    aria-controls="siteSearchResults"
+                    autocomplete="off"
+                >
+            </div>
+            <ul id="siteSearchResults" class="site-search-results" role="listbox" hidden data-no-results-text="{{ t('no_page_found') }}"></ul>
+        </div>
+        <script>window.SITE_SEARCH_DATA = {{ site_search_pages | tojson }};</script>
+    </section>
+
+    <section class="page-section">
         <div class="summary-grid">
             <div class="summary-card">
                 <span class="icon-badge" aria-hidden="true"><i class="fa-solid fa-credit-card"></i></span>

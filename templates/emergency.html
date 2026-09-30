@@ -15,7 +15,24 @@
 
     <section class="page-section">
         <h2><i class="fa-solid fa-phone" aria-hidden="true"></i> {{ t('emergency_resources_heading') }}</h2>
-        <p>{{ t('emergency_resources_text') }}</p>
+        <p>{{ t('emergency_resources_intro') }}</p>
+        <ul class="emergency-steps-list">
+            <li><i class="fa-solid fa-phone-volume" aria-hidden="true"></i> {{ t('emergency_step1') }}</li>
+            <li><i class="fa-solid fa-person-walking-arrow-right" aria-hidden="true"></i> {{ t('emergency_step2') }}</li>
+            <li><i class="fa-solid fa-user-group" aria-hidden="true"></i> {{ t('emergency_step3') }}</li>
+            <li><i class="fa-solid fa-user-shield" aria-hidden="true"></i> {{ t('emergency_step4') }}</li>
+        </ul>
+    </section>
+
+    <section class="page-section">
+        <div class="page-cta">
+            <span class="icon-badge icon-badge-large" aria-hidden="true"><i class="fa-solid fa-user-shield"></i></span>
+            <h2>{{ t('report_abuse_cta_heading') }}</h2>
+            <p>{{ t('report_abuse_cta_text') }}</p>
+            <a href="{{ url_for('report_abuse') }}" class="btn btn-primary">
+                <i class="fa-solid fa-user-shield" aria-hidden="true"></i> {{ t('report_confidentially_btn') }}
+            </a>
+        </div>
     </section>
 
     <section class="page-section">

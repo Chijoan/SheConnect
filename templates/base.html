@@ -64,6 +64,14 @@
                     </li>
 
                     {% if current_first_name %}
+                        <li class="nav-notifications">
+                            <a href="{{ url_for('notifications') }}" class="bell-link" aria-label="{{ t('notifications_heading') }}{% if unread_notifications_count %} ({{ unread_notifications_count }}){% endif %}">
+                                <i class="fa-solid fa-bell" aria-hidden="true"></i>
+                                {% if unread_notifications_count %}
+                                    <span class="notification-badge">{{ unread_notifications_count }}</span>
+                                {% endif %}
+                            </a>
+                        </li>
                         <li class="nav-account nav-account-desktop">
                             <a href="{{ url_for('profile') }}" class="account-chip" aria-label="View profile for {{ current_full_name }}">
                                 <span class="account-avatar" aria-hidden="true">{{ current_first_name[0]|upper }}</span>
@@ -93,7 +101,30 @@
         </div>
     </header>
 
+    {% if current_first_name and request.endpoint in page_nav_order %}
+        {% set nav_index = page_nav_order.index(request.endpoint) %}
+        {% if nav_index > 0 %}
+            {% set prev_endpoint = page_nav_order[nav_index - 1] %}
+            <a href="{{ url_for(prev_endpoint) }}" class="page-nav-arrow page-nav-arrow-left" title="{{ page_nav_names[prev_endpoint] }}" aria-label="{{ t('previous_page_label') }}: {{ page_nav_names[prev_endpoint] }}">
+                <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+            </a>
+        {% endif %}
+        {% if nav_index < page_nav_order|length - 1 %}
+            {% set next_endpoint = page_nav_order[nav_index + 1] %}
+            <a href="{{ url_for(next_endpoint) }}" class="page-nav-arrow page-nav-arrow-right" title="{{ page_nav_names[next_endpoint] }}" aria-label="{{ t('next_page_label') }}: {{ page_nav_names[next_endpoint] }}">
+                <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+            </a>
+        {% endif %}
+    {% endif %}
+
     <main>
+        {% if current_first_name and request.endpoint not in page_nav_order and request.endpoint not in ["login", "register"] %}
+            <div class="back-nav">
+                <a href="{{ url_for('dashboard') }}" class="back-link">
+                    <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> {{ t('back_to_dashboard') }}
+                </a>
+            </div>
+        {% endif %}
         {% block content %}{% endblock %}
     </main>
 

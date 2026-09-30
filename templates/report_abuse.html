@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block title %}Report Abuse Confidentially - SheConnect{% endblock %}
+
+{% block content %}
+    <section class="page-header page-header-compact">
+        <h1>Report Abuse Confidentially</h1>
+        <p>Your report is private. Only you can see what you submit here.</p>
+    </section>
+
+    {% if submitted_report %}
+        <section class="page-section tracker-message-section">
+            <div class="alert alert-success">
+                Your report has been submitted. Your reference number is
+                <strong>{{ submitted_report.reference_number }}</strong>. Keep this for your records.
+            </div>
+
+            {% if submitted_report.immediate_danger %}
+                <div class="emergency-warning">
+                    <p>
+                        <strong>You indicated that you are in immediate danger.</strong>
+                        Please visit the <a href="{{ url_for('emergency') }}">Emergency Help</a> page
+                        and contact your local emergency service right away.
+                        SheConnect is currently a prototype and does <strong>not</strong>
+                        automatically contact emergency services on your behalf.
+                    </p>
+                </div>
+            {% endif %}
+        </section>
+    {% endif %}
+
+    <section class="page-section">
+        <div class="tracker-card">
+            <span class="icon-badge" aria-hidden="true"><i class="fa-solid fa-user-shield"></i></span>
+            <h2>Submit a Report</h2>
+
+            <form method="POST" action="{{ url_for('report_abuse') }}" enctype="multipart/form-data" novalidate class="auth-form">
+                <div class="form-group">
+                    <label for="report_type">Type of abuse</label>
+                    <select id="report_type" name="report_type" required>
+                        <option value="" disabled selected>Select a type</option>
+                        {% for rt in report_types %}
+                            <option value="{{ rt }}">{{ rt }}</option>
+                        {% endfor %}
+                    </select>
+                    {% if errors.report_type %}
+                        <span class="field-error">{{ errors.report_type }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" rows="5" required
+                        placeholder="Describe what happened. This is confidential and only visible to you."></textarea>
+                    {% if errors.description %}
+                        <span class="field-error">{{ errors.description }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="incident_date">Date of incident</label>
+                    <input type="date" id="incident_date" name="incident_date" max="{{ today }}" required>
+                    {% if errors.incident_date %}
+                        <span class="field-error">{{ errors.incident_date }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="location">Location (optional)</label>
+                    <input type="text" id="location" name="location" maxlength="200" placeholder="e.g. Home, school, workplace">
+                </div>
+
+                <div class="form-group">
+                    <label for="evidence">
+                        <i class="fa-solid fa-paperclip" aria-hidden="true"></i> Evidence (optional)
+                    </label>
+                    <input type="file" id="evidence" name="evidence" accept=".png,.jpg,.jpeg,.pdf">
+                    <small class="field-hint">Accepted file types: PNG, JPG, JPEG or PDF.</small>
+                    {% if errors.evidence %}
+                        <span class="field-error">{{ errors.evidence }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="form-group form-group-checkbox">
+                    <label for="immediate_danger_checkbox" class="checkbox-label">
+                        <input type="checkbox" id="immediate_danger_checkbox" name="immediate_danger" value="yes">
+                        I am in immediate danger right now
+                    </label>
+                </div>
+
+                <div class="emergency-warning" id="dangerNotice" hidden>
+                    <p>
+                        If you are in immediate danger, please go to the
+                        <a href="{{ url_for('emergency') }}">Emergency Help</a> page and contact your
+                        local emergency service right away. SheConnect is currently a prototype and
+                        does <strong>not</strong> automatically contact emergency services on your behalf.
+                    </p>
+                </div>
+
+                <button type="submit" class="btn btn-primary auth-submit">Submit Report</button>
+            </form>
+        </div>
+    </section>
+
+    <section class="page-section">
+        <h2><i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i> Your Previous Reports</h2>
+        {% if reports %}
+            <div class="history-list">
+                {% for r in reports %}
+                    <div class="history-item">
+                        <span class="icon-badge" aria-hidden="true"><i class="fa-solid fa-file-shield"></i></span>
+                        <div class="history-item-body">
+                            <p class="history-item-title">{{ r.reference_number }} &bull; {{ r.report_type }}</p>
+                            <p class="history-item-meta">
+                                Incident date: {{ r.incident_date.strftime('%d %B %Y') }} &bull;
+                                Status: {{ r.status }}
+                                {% if r.immediate_danger %} &bull; <strong>Immediate danger reported</strong>{% endif %}
+                            </p>
+                            {% if r.evidence_files %}
+                                <p class="history-item-meta">
+                                    Evidence:
+                                    {% for e in r.evidence_files %}
+                                        <a href="{{ url_for('download_evidence', evidence_id=e.id) }}">{{ e.original_filename }}</a>{% if not loop.last %}, {% endif %}
+                                    {% endfor %}
+                                </p>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <span class="icon-badge icon-badge-large" aria-hidden="true"><i class="fa-solid fa-inbox"></i></span>
+                <p>No reports submitted yet.</p>
+            </div>
+        {% endif %}
+    </section>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('health_resources_heading') }} - SheConnect{% endblock %}
+
+{% block content %}
+    <section class="page-header">
+        <h1>{{ t('health_resources_heading') }}</h1>
+        <p>{{ t('health_resources_subtitle') }}</p>
+    </section>
+
+    <section class="page-section">
+        <div class="resource-filters">
+            <div class="resource-search">
+                <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                <input type="text" id="resourceSearch" placeholder="{{ t('search_placeholder') }}" aria-label="{{ t('search_placeholder') }}">
+            </div>
+            <select id="resourceCategory" aria-label="{{ t('all_categories_label') }}">
+                <option value="all">{{ t('all_categories_label') }}</option>
+                {% for c in categories %}
+                    <option value="{{ c.key }}">{{ c.label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="feature-grid feature-grid-full" id="resourceGrid">
+            {% for a in articles %}
+                <div class="feature-card resource-card article-list-card"
+                     data-category="{{ a.category_key }}"
+                     data-search="{{ (a.title ~ ' ' ~ a.summary ~ ' ' ~ a.category_label) | lower }}">
+                    <span class="icon-badge" aria-hidden="true"><i class="fa-solid {{ a.icon }}"></i></span>
+                    <span class="resource-category-tag">{{ a.category_label }}</span>
+                    <h3>{{ a.title }}</h3>
+                    <p>{{ a.summary }}</p>
+                    <a href="{{ url_for('health_article', slug=a.slug) }}" class="btn btn-secondary">{{ t('read_article_btn') }}</a>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="empty-state" id="resourceEmptyState" hidden>
+            <span class="icon-badge icon-badge-large" aria-hidden="true"><i class="fa-solid fa-magnifying-glass"></i></span>
+            <p>No articles match your search.</p>
+        </div>
+    </section>
+{% endblock %}

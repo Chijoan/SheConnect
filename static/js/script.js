@@ -294,3 +294,201 @@ if (celebrationContainer || celebrationCard) {
         }, 4200);
     }
 }
+
+// Report Abuse form: show the safety notice the instant "I am in immediate
+// danger" is checked, rather than only after the report is submitted.
+const dangerCheckbox = document.getElementById("immediate_danger_checkbox");
+const dangerNotice = document.getElementById("dangerNotice");
+
+if (dangerCheckbox && dangerNotice) {
+    dangerCheckbox.addEventListener("change", () => {
+        dangerNotice.hidden = !dangerCheckbox.checked;
+    });
+}
+
+// Health Resources: live search + category filter over the already-rendered
+// cards (no page reload, no server round-trip needed for just 6 articles).
+// If JavaScript is unavailable, every card simply stays visible.
+const resourceSearch = document.getElementById("resourceSearch");
+const resourceCategory = document.getElementById("resourceCategory");
+const resourceCards = document.querySelectorAll(".resource-card");
+const resourceEmptyState = document.getElementById("resourceEmptyState");
+
+if (resourceSearch && resourceCategory && resourceCards.length) {
+    const applyResourceFilters = () => {
+        const query = resourceSearch.value.trim().toLowerCase();
+        const category = resourceCategory.value;
+        let visibleCount = 0;
+
+        resourceCards.forEach((card) => {
+            const matchesQuery = !query || card.dataset.search.includes(query);
+            const matchesCategory = category === "all" || card.dataset.category === category;
+            const isVisible = matchesQuery && matchesCategory;
+            card.hidden = !isVisible;
+            if (isVisible) visibleCount += 1;
+        });
+
+        if (resourceEmptyState) {
+            resourceEmptyState.hidden = visibleCount !== 0;
+        }
+    };
+
+    resourceSearch.addEventListener("input", applyResourceFilters);
+    resourceCategory.addEventListener("change", applyResourceFilters);
+}
+
+// Dashboard site search: a website navigation search over a fixed list of
+// existing pages (never an external/internet search). Typing shows matching
+// suggestions, clicking or pressing Enter on a match navigates there, and an
+// unmatched query shows a clear "No page found" message instead of nothing.
+const siteSearchInput = document.getElementById("siteSearchInput");
+const siteSearchResults = document.getElementById("siteSearchResults");
+
+if (siteSearchInput && siteSearchResults && Array.isArray(window.SITE_SEARCH_DATA)) {
+    const pages = window.SITE_SEARCH_DATA;
+    const noResultsText = siteSearchResults.dataset.noResultsText || "No page found";
+    let activeIndex = -1;
+
+    const closeResults = () => {
+        siteSearchResults.hidden = true;
+        siteSearchResults.innerHTML = "";
+        siteSearchInput.setAttribute("aria-expanded", "false");
+        siteSearchInput.removeAttribute("aria-activedescendant");
+        activeIndex = -1;
+    };
+
+    const getMatches = (query) => {
+        const normalized = query.trim().toLowerCase();
+        if (!normalized) return [];
+        return pages.filter((page) => page.name.toLowerCase().includes(normalized));
+    };
+
+    const setActive = (index, optionCount) => {
+        const options = siteSearchResults.querySelectorAll('[role="option"]');
+        options.forEach((option) => option.classList.remove("site-search-active"));
+        if (index >= 0 && index < optionCount) {
+            options[index].classList.add("site-search-active");
+            options[index].scrollIntoView({ block: "nearest" });
+            siteSearchInput.setAttribute("aria-activedescendant", options[index].id);
+        } else {
+            siteSearchInput.removeAttribute("aria-activedescendant");
+        }
+        activeIndex = index;
+    };
+
+    const renderResults = (matches) => {
+        siteSearchResults.innerHTML = "";
+        activeIndex = -1;
+
+        if (matches.length === 0) {
+            const li = document.createElement("li");
+            li.className = "site-search-empty";
+            li.textContent = noResultsText;
+            li.setAttribute("role", "presentation");
+            siteSearchResults.appendChild(li);
+        } else {
+            matches.forEach((page, index) => {
+                const li = document.createElement("li");
+                li.textContent = page.name;
+                li.setAttribute("role", "option");
+                li.id = `siteSearchOption-${index}`;
+                li.addEventListener("click", () => {
+                    window.location.href = page.url;
+                });
+                siteSearchResults.appendChild(li);
+            });
+        }
+
+        siteSearchResults.hidden = false;
+        siteSearchInput.setAttribute("aria-expanded", "true");
+    };
+
+    siteSearchInput.addEventListener("input", () => {
+        if (siteSearchInput.value.trim() === "") {
+            closeResults();
+            return;
+        }
+        renderResults(getMatches(siteSearchInput.value));
+    });
+
+    siteSearchInput.addEventListener("keydown", (event) => {
+        const matches = getMatches(siteSearchInput.value);
+
+        if (event.key === "ArrowDown") {
+            if (matches.length === 0) return;
+            event.preventDefault();
+            setActive(Math.min(activeIndex + 1, matches.length - 1), matches.length);
+        } else if (event.key === "ArrowUp") {
+            if (matches.length === 0) return;
+            event.preventDefault();
+            setActive(Math.max(activeIndex - 1, 0), matches.length);
+        } else if (event.key === "Enter") {
+            event.preventDefault();
+            if (activeIndex >= 0 && matches[activeIndex]) {
+                window.location.href = matches[activeIndex].url;
+                return;
+            }
+            const query = siteSearchInput.value.trim().toLowerCase();
+            const exactMatch = pages.find((page) => page.name.toLowerCase() === query);
+            if (exactMatch) {
+                window.location.href = exactMatch.url;
+            }
+        } else if (event.key === "Escape") {
+            closeResults();
+        }
+    });
+
+    document.addEventListener("click", (event) => {
+        if (!siteSearchInput.contains(event.target) && !siteSearchResults.contains(event.target)) {
+            closeResults();
+        }
+    });
+}
+
+// Profile page: view mode / edit mode toggle. The server renders both
+// blocks; JavaScript only ever shows or hides them, so nothing about the
+// underlying form or its submission changes. "Cancel" also resets the form
+// to its server-rendered defaults, so typed but unsaved edits are discarded
+// even if the user reopens edit mode again without a page reload.
+const profileViewBlock = document.getElementById("profileViewBlock");
+const profileEditBlock = document.getElementById("profileEditBlock");
+const editProfileBtn = document.getElementById("editProfileBtn");
+const cancelEditBtn = document.getElementById("cancelEditBtn");
+const profileEditForm = document.getElementById("profileEditForm");
+
+if (profileViewBlock && profileEditBlock && editProfileBtn) {
+    editProfileBtn.addEventListener("click", () => {
+        profileViewBlock.hidden = true;
+        profileEditBlock.hidden = false;
+        const firstField = document.getElementById("full_name");
+        if (firstField) firstField.focus();
+    });
+}
+
+if (profileViewBlock && profileEditBlock && cancelEditBtn) {
+    cancelEditBtn.addEventListener("click", () => {
+        if (profileEditForm) profileEditForm.reset();
+        profileEditBlock.hidden = true;
+        profileViewBlock.hidden = false;
+    });
+}
+
+// Education page: Technology Courses / Scholarship Opportunities tabs.
+// Switches the visible panel without a page reload; if JavaScript is
+// unavailable, both panels simply stay visible one after another.
+const eduTabs = document.querySelectorAll(".edu-tab");
+
+if (eduTabs.length) {
+    eduTabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+            eduTabs.forEach((otherTab) => {
+                const isActive = otherTab === tab;
+                otherTab.classList.toggle("edu-tab-active", isActive);
+                otherTab.setAttribute("aria-selected", String(isActive));
+
+                const panel = document.getElementById(otherTab.dataset.target);
+                if (panel) panel.hidden = !isActive;
+            });
+        });
+    });
+}

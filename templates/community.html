@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('community_heading') }} - SheConnect{% endblock %}
+
+{% block content %}
+    <section class="page-header">
+        <h1>{{ t('community_heading') }}</h1>
+        <p>{{ t('community_subtitle') }}</p>
+    </section>
+
+    <section class="page-section">
+        <div class="safety-notice">
+            <span class="icon-badge" aria-hidden="true"><i class="fa-solid fa-shield-halved"></i></span>
+            <div>
+                <h3>{{ t('safety_notice_heading') }}</h3>
+                <p>{{ t('safety_notice_text') }}</p>
+            </div>
+        </div>
+
+        <div class="emergency-warning community-emergency-notice">
+            <p>
+                <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
+                {{ t('community_emergency_text') }}
+                <a href="{{ url_for('emergency') }}">{{ t('emergency_heading') }}</a>
+            </p>
+        </div>
+    </section>
+
+    <section class="page-section">
+        <div class="tracker-card">
+            <span class="icon-badge" aria-hidden="true"><i class="fa-solid fa-comments"></i></span>
+            <h2>{{ t('share_post_heading') }}</h2>
+
+            <form method="POST" action="{{ url_for('community') }}" novalidate class="auth-form">
+                <div class="form-group">
+                    <label for="content">{{ t('post_content_label') }}</label>
+                    <textarea id="content" name="content" rows="4" maxlength="1000"
+                        placeholder="{{ t('post_content_placeholder') }}">{{ form_data.content }}</textarea>
+                    {% if errors.content %}
+                        <span class="field-error">{{ errors.content }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="category">{{ t('post_category_label') }}</label>
+                    <select id="category" name="category" required>
+                        <option value="" disabled {% if not form_data.category %}selected{% endif %}>{{ t('post_category_placeholder') }}</option>
+                        {% for c in categories %}
+                            <option value="{{ c.key }}" {% if form_data.category == c.key %}selected{% endif %}>{{ c.label }}</option>
+                        {% endfor %}
+                    </select>
+                    {% if errors.category %}
+                        <span class="field-error">{{ errors.category }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="form-group form-group-checkbox">
+                    <label for="is_anonymous_checkbox" class="checkbox-label">
+                        <input type="checkbox" id="is_anonymous_checkbox" name="is_anonymous" value="yes" {% if form_data.is_anonymous %}checked{% endif %}>
+                        {{ t('post_anonymous_label') }}
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary auth-submit">{{ t('post_submit_btn') }}</button>
+            </form>
+        </div>
+    </section>
+
+    <section class="page-section">
+        {% if posts %}
+            <div class="community-post-list">
+                {% for post in posts %}
+                    <div class="community-post" id="post-{{ post.id }}">
+                        <div class="community-post-header">
+                            <span class="icon-badge" aria-hidden="true">
+                                <i class="fa-solid {% if post.is_anonymous %}fa-user-secret{% else %}fa-circle-user{% endif %}"></i>
+                            </span>
+                            <div>
+                                <p class="history-item-title">{{ post.author_name }}</p>
+                                <p class="history-item-meta">
+                                    {{ post.created_at.strftime('%d %B %Y, %H:%M') }}
+                                </p>
+                            </div>
+                            <span class="resource-category-tag community-category-tag">{{ post.category_label }}</span>
+                        </div>
+
+                        <p class="community-post-content">{{ post.content }}</p>
+
+                        <div class="community-post-actions">
+                            <form method="POST" action="{{ url_for('toggle_support', post_id=post.id) }}" class="community-support-form">
+                                <button type="submit" class="btn btn-small {% if post.has_supported %}btn-primary{% else %}btn-secondary{% endif %}">
+                                    <i class="fa-solid fa-hand-holding-heart" aria-hidden="true"></i>
+                                    {% if post.has_supported %}{{ t('remove_support_btn') }}{% else %}{{ t('send_support_btn') }}{% endif %}
+                                </button>
+                            </form>
+                            <span class="community-support-count">{{ t('support_count_label', count=post.support_count) }}</span>
+
+                            {% if post.is_owner %}
+                                <form method="POST" action="{{ url_for('delete_post', post_id=post.id) }}" class="community-delete-form"
+                                      onsubmit="return confirm('{{ t('delete_post_confirm') }}');">
+                                    <button type="submit" class="btn btn-small btn-secondary community-delete-btn">
+                                        <i class="fa-solid fa-trash" aria-hidden="true"></i> {{ t('delete_post_btn') }}
+                                    </button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <span class="icon-badge icon-badge-large" aria-hidden="true"><i class="fa-solid fa-comments"></i></span>
+                <p>{{ t('empty_state_community') }}</p>
+            </div>
+        {% endif %}
+    </section>
+{% endblock %}
