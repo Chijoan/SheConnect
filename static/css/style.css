@@ -2171,6 +2171,12 @@ section {
     border: 1px solid #b6e3c3;
 }
 
+.alert-info {
+    background-color: var(--pink-light);
+    color: var(--purple);
+    border: 1px solid var(--pink);
+}
+
 .auth-switch {
     margin-top: 18px;
     text-align: center;

@@ -57,6 +57,7 @@ TRANSLATIONS = {
         # Login
         "login_page_heading": "Log in to SheConnect",
         "login_subtitle": "Welcome back — enter your details to continue.",
+        "login_required_message": "Please log in or create an account to access this feature.",
         "field_email": "Email",
         "field_password": "Password",
         "login_btn": "Log in",
@@ -488,6 +489,7 @@ TRANSLATIONS = {
 
         "login_page_heading": "Connexion à SheConnect",
         "login_subtitle": "Ravis de vous revoir — entrez vos informations pour continuer.",
+        "login_required_message": "Veuillez vous connecter ou créer un compte pour accéder à cette fonctionnalité.",
         "field_email": "E-mail",
         "field_password": "Mot de passe",
         "login_btn": "Se connecter",
@@ -909,6 +911,7 @@ TRANSLATIONS = {
 
         "login_page_heading": "Konekte lor SheConnect",
         "login_subtitle": "Byenveni ankor — rant to bann detay pou kontign.",
+        "login_required_message": "Silvouple konekte ouswa kre enn kont pou aksed sa fonksyon la.",
         "field_email": "Email",
         "field_password": "Mo-de-pas",
         "login_btn": "Konekte",
@@ -1330,6 +1333,7 @@ TRANSLATIONS = {
 
         "login_page_heading": "Log In to SheConnect",
         "login_subtitle": "Welcome back — put your details to continue.",
+        "login_required_message": "Abeg log in or create account before you fit use this feature.",
         "field_email": "Email",
         "field_password": "Password",
         "login_btn": "Log In",

@@ -1304,7 +1304,9 @@ def login_required(view):
     @wraps(view)
     def wrapped_view(*args, **kwargs):
         if "user_id" not in session:
-            return redirect(url_for("login"))
+            # Sends the visitor to Login with the page she asked for, so she
+            # can be returned there automatically after signing in.
+            return redirect(url_for("login", next=request.path))
         return view(*args, **kwargs)
     return wrapped_view
 
@@ -1341,6 +1343,7 @@ def about():
 
 
 @app.route("/features")
+@login_required
 def features():
     lang = get_current_language()
     return render_template("features.html", feature_cards=localize_cards(FEATURE_CARDS, lang))
@@ -1352,6 +1355,7 @@ def emergency():
 
 
 @app.route("/subscription")
+@login_required
 def subscription():
     return render_template("subscription.html")
 
@@ -2021,8 +2025,14 @@ def delete_notification(notification_id):
 def login():
     lang = get_current_language()
 
+    # Only an internal path is ever honoured, never a full URL, so this can
+    # never be used to redirect a member off SheConnect after logging in.
+    next_url = request.values.get("next", "").strip()
+    if not (next_url.startswith("/") and not next_url.startswith("//")):
+        next_url = ""
+
     if request.method != "POST":
-        return render_template("login.html")
+        return render_template("login.html", next_url=next_url)
 
     email = request.form.get("email", "").strip().lower()
     password = request.form.get("password", "")
@@ -2043,10 +2053,10 @@ def login():
             errors["password"] = translate("err_incorrect_password", lang)
 
     if errors:
-        return render_template("login.html", errors=errors, form_data={"email": email})
+        return render_template("login.html", errors=errors, form_data={"email": email}, next_url=next_url)
 
     session["user_id"] = user.id
-    return redirect(url_for("dashboard"))
+    return redirect(next_url or url_for("dashboard"))
 
 
 @app.route("/register", methods=["GET", "POST"])

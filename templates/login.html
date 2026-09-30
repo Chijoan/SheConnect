@@ -8,7 +8,14 @@
             <h1>{{ t('login_page_heading') }}</h1>
             <p class="auth-subtitle">{{ t('login_subtitle') }}</p>
 
+            {% if next_url %}
+                <div class="alert alert-info">{{ t('login_required_message') }}</div>
+            {% endif %}
+
             <form method="POST" action="{{ url_for('login') }}" novalidate class="auth-form">
+                {% if next_url %}
+                    <input type="hidden" name="next" value="{{ next_url }}">
+                {% endif %}
                 <div class="form-group">
                     <label for="email">{{ t('field_email') }}</label>
                     <input
