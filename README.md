@@ -88,6 +88,53 @@ software engineering portfolio.
 - Full interface translation into English, French, Mauritian Kreol and
   Nigerian Pidgin, switchable at any time from the navigation bar
 
+## Access and Login Requirements
+
+SheConnect enforces access control on the server, in Flask itself, not
+just by hiding buttons in the interface. A logged-out visitor who
+requests a protected page or submits a protected form directly is
+redirected to Login, never shown the page or its data.
+
+**Public, no account required:**
+- Home
+- About
+- Emergency Help (including its safety guidance, the Quick Exit
+  button, and the confidential reporting link, which itself still
+  requires login to submit a report)
+- Login
+- Register
+- Language selection
+
+**Requires login:**
+- Features overview and every individual feature page it links to
+- Subscription plan information
+- Dashboard
+- Profile (viewing and editing)
+- Cycle Tracker (menstrual and mood tracking)
+- Confidential Abuse Reporting, evidence upload and personal report
+  history
+- Health Resources (article listing and individual articles)
+- Education: Technology Learning courses and lessons, saved progress,
+  and Scholarship Opportunities
+- Community: viewing the feed, posting, supporting a post, and
+  deleting a post
+- Notifications
+
+When a logged-out visitor tries to open a protected feature (through
+the interface or by requesting the URL directly), she is redirected to
+Login with the message "Please log in or create an account to access
+this feature." After a successful login, she is returned to the exact
+page she originally requested, using an internal SheConnect path only;
+an external URL can never be used for that redirect. The public pages
+still show descriptions of what each protected feature offers, so a
+visitor always knows what is available before creating an account.
+
+Every member can only view or change her own profile, tracker entries,
+reports and learning progress. Community posts are the one exception
+by design: they are visible to other logged-in members, since Community
+is a shared space, though a member can post anonymously and can only
+ever delete her own posts.
+
 ## Technologies Used
 
 - Python 3
