@@ -56,7 +56,7 @@ TRANSLATIONS = {
 
         # Login
         "login_page_heading": "Log in to SheConnect",
-        "login_subtitle": "Welcome back — enter your details to continue.",
+        "login_subtitle": "Welcome back! Enter your details to continue.",
         "login_required_message": "Please log in or create an account to access this feature.",
         "field_email": "Email",
         "field_password": "Password",

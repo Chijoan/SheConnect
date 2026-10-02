@@ -1,7 +1,12 @@
 /* ---------- Base ---------- */
 :root {
-    --pink: #d63384;
-    --pink-light: #f9d7e6;
+    /* Same brand pink and purple as before, nudged very slightly: --pink
+       a touch deeper so pink text/buttons on white clear WCAG AA with a
+       safe margin (was borderline at 4.5:1), and --pink-light a touch
+       softer so large pink-light backgrounds (hero, CTA sections) read
+       less glaring. Everything else in the palette is unchanged. */
+    --pink: #cc2c7a;
+    --pink-light: #f3d8e6;
     --purple: #6f42c1;
     --cream: #fdf6f0;
     --text-dark: #3a2e35;
